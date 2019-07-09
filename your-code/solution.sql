@@ -40,7 +40,7 @@ ON t_author.title_id = sales.title_id
 GROUP BY authors.au_id, authors.au_lname, authors.au_fname
 ORDER BY SUM(sales.qty) DESC;
 
-SELECT authors.au_id, authors.au_lname, authors.au_fname, SUM(titles.advance * 1/titleauthor.royaltyper) + (((titles.price*sales.qty)*titles.royalty)*titleauthor.royaltyper) as PROFIT
+SELECT authors.au_id, authors.au_lname, authors.au_fname, (SUM((titles.advance * titleauthor.royaltyper)+(((titles.price*sales.qty)*titles.royalty/100)*titleauthor.royaltyper))/100) as PROFIT
 FROM publications.authors
 INNER JOIN publications.titleauthor
 On authors.au_id = titleauthor.au_id
