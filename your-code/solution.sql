@@ -1,3 +1,5 @@
+USE publications;
+
 SELECT 
 authors.au_id as "AUTHOR ID",
 authors.au_lname as "LAST NAME",
@@ -36,7 +38,7 @@ SELECT
 authors.au_id as "AUTHOR ID",
 authors.au_lname as "LAST NAME",
 authors.au_fname as "FIRST NAME",
-SUM(sales.qty) as "TOTAL"
+IFNULL(SUM(sales.qty),0) as "TOTAL"
 FROM authors
 LEFT JOIN titleauthor ON authors.au_id = titleauthor.au_id
 LEFT JOIN titles ON titleauthor.title_id = titles.title_id
@@ -47,7 +49,7 @@ SELECT
 authors.au_id as "AUTHOR ID",
 authors.au_lname as "LAST NAME",
 authors.au_fname as "FIRST NAME",
-round(((titleauthor.royaltyper * titles.royalty * titles.price * sales.qty) + (titles.advance / COUNT(titles.title_id))),2)  as "PROFIT"
+round((((titleauthor.royaltyper/100) * (titles.royalty/100) * titles.price * sales.qty) + (titles.advance / COUNT(titles.title_id))),2)  as "PROFIT"
 FROM authors
 INNER JOIN titleauthor ON authors.au_id = titleauthor.au_id
 INNER JOIN titles ON titleauthor.title_id = titles.title_id
