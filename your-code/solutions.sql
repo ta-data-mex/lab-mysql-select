@@ -1,68 +1,59 @@
 USE publications;
 
+-- PRIMER CHALLENGE
 SELECT
 authors.au_id AS AUTHOR_ID,
 authors.au_lname AS LAST_NAME,
 authors.au_fname AS FIRST_NAME,
 titles.title AS TITLE,
 publishers.pub_name AS PUBLISHER
-FROM authors, titles, publishers
-INNER JOIN titleauthor ON titles.title_id = titleauthor.title.id
-INNER JOIN publishers ON titles.pub_id = publishers.pub_id
-INNER JOIN titleauthor ON titleauthor.au_id = authors.au_id
-GROUP BY authors.au_id;
+FROM authors
+JOIN titleauthor ON authors.au_id = titleauthor.au_id
+JOIN titles ON titles.title_id = titleauthor.title_id
+JOIN publishers ON titles.pub_id = publishers.pub_id
+GROUP BY authors.au_id
+;
 
-
-SELECT
-authors.au_id AS AUTHOR_ID,
-authors.au_lname AS LAST_NAME,
-authors.au_fname AS FIRST_NAME,
-titles.title AS TITLE,
-publishers.pub_name AS PUBLISHER
-FROM titles
-INNER JOIN titleauthor ON titles.title_id = titleauthor.title.id
-INNER JOIN publishers ON titles.pub_id = publishers.pub_id
-INNER JOIN titleauthor ON titleauthor.au_id = authors.au_id
-GROUP BY authors. au_id;
-
-
+-- SEGUNDO CHALLENGE
 SELECT
 authors.au_id AS AUTHOR_ID,
 authors.au_lname AS LAST_NAME,
 authors.au_fname AS FIRST_NAME,
 publishers.pub_name AS PUBLISHER,
-COUNT(DISTINCT(titles.title)) AS TITLE_COUNT
-FROM titles
-INNER JOIN titleauthor ON titles.title_id = titleauthor.title.id
-LEFT JOIN publishers ON titles.pub_id = publishers.pub_id
-INNER JOIN titleauthor ON titleauthor.au_id = authors.au_id
+COUNT(titles.title_id) AS TITLE_COUNT
+FROM authors
+JOIN titleauthor ON authors.au_id = titleauthor.au_id
+JOIN titles ON titles.title_id = titleauthor.title_id
+JOIN publishers ON titles.pub_id = publishers.pub_id
 GROUP BY authors.au_id
-ORDER BY titles.title DESC;
+;
 
-
+-- TERCER CHALLENGE
 SELECT
 authors.au_id AS AUTHOR_ID,
 authors.au_lname AS LAST_NAME,
 authors.au_fname AS FIRST_NAME,
 COUNT(sales.title_id) AS TOTAL
-FROM titles
-INNER JOIN titleauthor ON titles.title_id = titleauthor.title.id
-INNER JOIN titleauthor ON titleauthor.au_id = authors.au_id
+FROM authors
+INNER JOIN titleauthor ON authors.au_id = titleauthor.au_id
+INNER JOIN titles ON titles.title_id = titleauthor.title_id
 INNER JOIN sales ON titles.title_id = sales.title_id
 GROUP BY authors.au_id
-ORDER BY saless.title_id DESC
-LIMIT 3;
+ORDER BY sales.title_id DESC
+LIMIT 3
+;
 
-
+-- CUARTO CHALLENGE
 SELECT
 authors.au_id AS AUTHOR_ID,
 authors.au_lname AS LAST_NAME,
 authors.au_fname AS FIRST_NAME,
 COUNT(sales.title_id) AS TOTAL
-FROM titles
-INNER JOIN titleauthor ON titles.title_id = titleauthor.title.id
-INNER JOIN titleauthor ON titleauthor.au_id = authors.au_id
+FROM authors
+INNER JOIN titleauthor ON authors.au_id = titleauthor.au_id
+INNER JOIN titles ON titles.title_id = titleauthor.title_id
 INNER JOIN sales ON titles.title_id = sales.title_id
-GROUP BY authors. au_id
-ORDER BY saless.title_id DESC
-LIMIT 23;
+GROUP BY authors.au_id
+ORDER BY sales.title_id DESC
+LIMIT 23
+;
